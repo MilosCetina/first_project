@@ -1,16 +1,17 @@
+import 'package:dartz/dartz.dart';
+
 import '../error/exceptions.dart';
+import '../error/failures.dart';
 
 class Helper {
-  String validEmailAddress(String input) {
+  static Either<ValueFailure<String>, String>  validateEmailAddress(String input) {
     const emailRegex =
         r"""^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+""";
 
     if (RegExp(emailRegex).hasMatch(input)) {
-      return input;
+      return right(input);
     } else {
-      throw InvalidEmailException(
-        failedValue: input,
-      );
+      return left(ValueFailure.invalidEmail(failedValue: input));
     }
   }
 }

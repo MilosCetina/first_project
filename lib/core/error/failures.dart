@@ -1,10 +1,14 @@
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class Failure extends Equatable{
-  const Failure([List properties = const <dynamic>[]]);
-}
 
-class ServerFailure extends Failure{
-  @override
-  List<Object?> get props => [];
+
+@freezed
+abstract class ValueFailure<T>{
+  const factory ValueFailure.invalidEmail({
+    @required T failedValue,
+  }) = InvalidEmail<T>;
+  const factory ValueFailure.shortPassword({
+    @required T failedValue,
+  }) = ShortPassword<T>;
 }

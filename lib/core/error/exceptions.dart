@@ -3,3 +3,4 @@ class InvalidEmailException implements Exception {
 
   InvalidEmailException({required this.failedValue});
 }
+
