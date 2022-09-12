@@ -1,4 +1,4 @@
-import 'package:first_project/features/simple_app/presentation/bloc/simple_app_bloc.dart';
+import 'package:first_project/features/simple_app/presentation/auth/blocs/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    BlocProvider.of<SimpleAppBloc>(context).login;
+    BlocProvider.of<AuthBloc>(context).loginUsecase;
   }
 
   @override

@@ -18,6 +18,12 @@ class SimpleAppModel extends SimpleApp{
       });
     }
   }
+
+  //!!!!!!!!!!!!!!!!!!!!!!
+  // SimpleApp toEntity(){
+  //   return SimpleApp(htmlTags: , pdfLinks: , title: );
+  // }
+
 }
 
 class PdfLinksModel extends PdfLinks{

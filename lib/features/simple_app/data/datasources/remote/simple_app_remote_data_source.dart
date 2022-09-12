@@ -1,4 +1,5 @@
 import '../../../../../core/error/exceptions.dart';
+import '../../../domain/usecases/get_data.dart';
 import '../../../domain/usecases/post_login.dart';
 import '../../models/simple_app_model.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ abstract class SimpleAppRemoteDataSource{
   // Future<SimpleAppModel> getData();
   // Future<SimpleAppModel> getLink();
   Future<LoginResponse> login(LoginParams loginParams);
+  Future<SimpleAppModel> data(DataParams dataParams);
 }
 
 class SimpleAppRemoteDataSourceImpl implements SimpleAppRemoteDataSource{
@@ -37,9 +39,26 @@ class SimpleAppRemoteDataSourceImpl implements SimpleAppRemoteDataSource{
       if(response.statusCode == 200){
         return result;
       }else{
-        throw ServerException(result.toString());
+        throw ServerException("Server ne valja");
       }
     } on ServerException catch (e){
+      throw ServerException(e.message);
+    }
+  }
+
+  @override
+  Future<SimpleAppModel> data(DataParams dataParams) async {
+    try{
+      final url = Uri.parse("https://icb-first-project-default-rtdb.europe-west1.firebasedatabase.app");
+      final response = await client.get(url);
+      final result = SimpleAppModel.fromJson(response.body);
+
+      if(response.statusCode == 200){
+        return result;
+      } else{
+        throw ServerException("Server ne valja");
+      }
+    } on ServerException catch(e){
       throw ServerException(e.message);
     }
   }
