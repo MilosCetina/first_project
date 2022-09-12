@@ -4,3 +4,9 @@ class InvalidEmailException implements Exception {
   InvalidEmailException({required this.failedValue});
 }
 
+class ServerException implements Exception {
+  String? message;
+
+  ServerException(this.message);
+}
+

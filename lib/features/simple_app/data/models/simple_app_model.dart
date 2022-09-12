@@ -3,7 +3,7 @@ import 'package:first_project/features/simple_app/domain/entities/simple_app.dar
 class SimpleAppModel extends SimpleApp{
   SimpleAppModel({super.title, super.pdfLinks, super.htmlTags});
 
-  SimpleAppModel.fromJson(Map<String, dynamic> json){
+  SimpleAppModel.fromJson(dynamic json){
     title = json['title'];
     if (json['pdfLinks'] != null) {
       pdfLinks = <PdfLinks>[];
