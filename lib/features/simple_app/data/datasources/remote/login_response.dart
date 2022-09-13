@@ -3,22 +3,19 @@ import 'package:equatable/equatable.dart';
 import '../../../domain/entities/login.dart';
 
 class LoginResponse extends Equatable {
-  final int? id;
+  final String? id;
   final String? token;
-  final String? error;
 
-  const LoginResponse({this.id, this.token, this.error});
+  const LoginResponse({this.id, this.token});
 
   LoginResponse.fromJson(dynamic json)
-      : id = json['id'] as int?,
-        token = json['token'] as String?,
-        error = json['error'] as String?;
+      : id = json['localId'],
+        token = json['idToken'];
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = id;
-    map['token'] = token;
-    map['error'] = error;
+    map['localId'] = id;
+    map['idToken'] = token;
 
     return map;
   }
@@ -29,6 +26,5 @@ class LoginResponse extends Equatable {
   List<Object?> get props => [
     id,
     token,
-    error,
   ];
 }

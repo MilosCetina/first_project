@@ -18,6 +18,9 @@ class SimpleAppRepositoryImpl implements SimpleAppRepository{
   Future<Either<Failure, Login>> login(LoginParams loginParams) async {
     try{
       final response = await simpleAppRemoteDataSource.login(loginParams);
+
+      print("Dosao sam u repo od data");
+      print("Ovo je response od repo data $response");
       
       return Right(response.toEntity());
     } on ServerException catch(e){

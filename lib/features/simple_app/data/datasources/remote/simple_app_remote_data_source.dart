@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../../../core/error/exceptions.dart';
 import '../../../domain/usecases/get_data.dart';
 import '../../../domain/usecases/post_login.dart';
@@ -31,12 +33,16 @@ class SimpleAppRemoteDataSourceImpl implements SimpleAppRemoteDataSource{
   @override
   Future<LoginResponse> login(LoginParams loginParams) async {
     try{
-      final url = Uri.parse("https://icb-first-project-default-rtdb.europe-west1.firebasedatabase.app");
+      final url = Uri.parse("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAD3SARICdEM8UteFzAtjqS5AnfdtHXSeQ");
       final response = await client.post(url, body: loginParams.toJson());
 
-      final result = LoginResponse.fromJson(response.body);
+      print("dosao sam u datasource od data");
+
+      print(json.decode(response.body));
+
 
       if(response.statusCode == 200){
+        final result = LoginResponse.fromJson(json.decode(response.body));
         return result;
       }else{
         throw ServerException("Server ne valja");

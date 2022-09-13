@@ -5,13 +5,16 @@ import 'package:first_project/features/simple_app/domain/repositories/simple_app
 
 import '../entities/login.dart';
 
-class PostLogin extends UseCase<Login, LoginParams>{
+class PostLogin extends UseCase<Login, LoginParams> {
   final SimpleAppRepository _repo;
-  
+
   PostLogin(this._repo);
 
   @override
-  Future<Either<Failure, Login>> call(LoginParams params) => _repo.login(params);
+  Future<Either<Failure, Login>> call(LoginParams params) async {
+    print("in usecase");
+    return await _repo.login(params);
+  }
 }
 
 class LoginParams {
@@ -24,7 +27,8 @@ class LoginParams {
   });
 
   Map<String, dynamic> toJson() => {
-    "email": email,
-    "password": password,
-  };
+        "email": email,
+        "password": password,
+        "returnSecureToken": "true",
+      };
 }
