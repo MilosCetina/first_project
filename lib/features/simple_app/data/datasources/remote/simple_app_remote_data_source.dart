@@ -13,6 +13,7 @@ abstract class SimpleAppRemoteDataSource{
   // Future<SimpleAppModel> getLink();
   Future<LoginResponse> login(LoginParams loginParams);
   Future<SimpleAppListModel> data(DataParams dataParams);
+  Future<SimpleAppModel> detailData(DataParams dataParams);
 }
 
 class SimpleAppRemoteDataSourceImpl implements SimpleAppRemoteDataSource{
@@ -66,6 +67,12 @@ class SimpleAppRemoteDataSourceImpl implements SimpleAppRemoteDataSource{
     } on ServerException catch(e){
       throw ServerException(e.message);
     }
+  }
+
+  @override
+  Future<SimpleAppModel> detailData(DataParams dataParams) {
+    // TODO: implement detailData
+    throw UnimplementedError();
   }
 
 

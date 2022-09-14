@@ -1,6 +1,7 @@
 import 'package:first_project/features/simple_app/domain/usecases/get_data.dart';
 import 'package:first_project/features/simple_app/presentation/auth/blocs/auth/auth_bloc.dart';
 import 'package:first_project/features/simple_app/presentation/auth/blocs/data/data_bloc.dart';
+import 'package:first_project/features/simple_app/presentation/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'injection_container.dart' as di;
@@ -36,15 +37,6 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
           primarySwatch: Colors.blue,
         ),
         home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -55,15 +47,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -95,35 +78,52 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            if (state is AuthFailure) {
-              return Text("Ne uspesan login");
-            } else if (state is AuthSuccess) {
-              return Column(
-                children: [
-                  Text(state.localId),
-                  TextButton(
-                    onPressed: () => _nekaFuncija(state.userToken),
-                    child: Text("Get Data"),
-                  )
-                ],
-              );
-            }
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'Please log in!',
-                ),
-                Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ],
-            );
-          },
-        ),
+        child: Column(
+            children: [
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state is AuthFailure) {
+                    return const Text("Ne uspesan login");
+                  } else if (state is AuthSuccess) {
+                    return Column(
+                      children: [
+                        Text("Pozdrav ${state.localId}"),
+                        TextButton(
+                          onPressed: () => _nekaFuncija(state.userToken),
+                          child: const Text("Get Data"),
+                        )
+                      ],
+                    );
+                  }
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text(
+                        'Please log in!',
+                      ),
+                      Text(
+                        '$_counter',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ],
+                  );
+                },
+              ),
+              BlocBuilder<DataBloc, DataState>(
+                builder: (context, state) {
+                  if (state is DataFailure) {
+                    return const Text("Ne uspesan get data");
+                  } else if (state is DataSuccess) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>  MainPage(listOfItems: state.listOfItems,)));
+                  }
+                  return Text("");
+                },
+              ),
+            ],
+          ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,

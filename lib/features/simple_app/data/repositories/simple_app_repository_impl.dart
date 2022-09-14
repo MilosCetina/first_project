@@ -39,4 +39,10 @@ class SimpleAppRepositoryImpl implements SimpleAppRepository{
     }
   }
 
+  @override
+  Future<Either<Failure, SimpleApp>> detailData(DataParams dataParams) {
+    // TODO: implement detailData
+    throw UnimplementedError();
+  }
+
 }

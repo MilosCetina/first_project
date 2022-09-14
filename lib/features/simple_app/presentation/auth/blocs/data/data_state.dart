@@ -26,8 +26,12 @@ class DataFailure extends DataState {
 }
 
 class DataSuccess extends DataState {
+  final List<SimpleApp> listOfItems;
+
+  const DataSuccess(this.listOfItems);
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [listOfItems];
 }
 
 

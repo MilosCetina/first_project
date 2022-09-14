@@ -13,36 +13,35 @@ class SimpleAppListModel extends SimpleAppList {
 }
 
 class SimpleAppModel extends SimpleApp {
-  SimpleAppModel({super.title, super.pdfLinks, super.htmlTags});
+  SimpleAppModel({required super.title, required super.pdfLinks, required super.htmlTags});
 
-  SimpleAppModel.fromJson(Map<String, dynamic> json) {
+  factory SimpleAppModel.fromJson(Map<String, dynamic> json) {
     print("------------------------------");
     json.forEach((key, value) {
       print(key);
       print(value);
     });
-    title = json['title'];
+    List<PdfLinksModel> pdfLinksList = <PdfLinksModel>[];
     if (json['pdfLinks'] != null) {
-      pdfLinks = <PdfLinks>[];
       json['pdfLinks'].forEach((v) {
-        pdfLinks!.add(PdfLinksModel.fromJson(v));
+        pdfLinksList.add(PdfLinksModel.fromJson(v));
       });
     }
+    List<HtmlTagsModel> htmlTagsList = <HtmlTagsModel>[];
     if (json['htmlTags'] != null) {
-      htmlTags = <HtmlTags>[];
       json['htmlTags'].forEach((v) {
-        htmlTags!.add(HtmlTagsModel.fromJson(v));
+        htmlTagsList.add(HtmlTagsModel.fromJson(v));
       });
     }
+    return SimpleAppModel(title: json['title'], pdfLinks: pdfLinksList, htmlTags: htmlTagsList);
   }
 }
 
 class PdfLinksModel extends PdfLinks {
-  PdfLinksModel({super.title, super.link});
+  PdfLinksModel({required super.title, required super.link});
 
-  PdfLinksModel.fromJson(Map<String, dynamic> json) {
-    title = json['title'];
-    link = json['link'];
+  factory PdfLinksModel.fromJson(Map<String, dynamic> json) {
+    return PdfLinksModel(title: json['title'], link: json['link']);
   }
 
   Map<String, dynamic> toJson() {
@@ -51,14 +50,14 @@ class PdfLinksModel extends PdfLinks {
     data['link'] = super.link;
     return data;
   }
+
 }
 
 class HtmlTagsModel extends HtmlTags {
-  HtmlTagsModel({super.title, super.html});
+  HtmlTagsModel({required super.title, required super.html});
 
-  HtmlTagsModel.fromJson(Map<String, dynamic> json) {
-    title = json['title'];
-    html = json['html'];
+  factory HtmlTagsModel.fromJson(Map<String, dynamic> json) {
+    return HtmlTagsModel(title: json['title'] ?? "Default title", html: json['html']);
   }
 
   Map<String, dynamic> toJson() {

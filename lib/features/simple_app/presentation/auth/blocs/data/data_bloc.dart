@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:first_project/features/simple_app/domain/usecases/get_data.dart';
 
+import '../../../../domain/entities/simple_app.dart';
+
 part 'data_event.dart';
 part 'data_state.dart';
 
@@ -13,7 +15,7 @@ class DataBloc extends Bloc<DataEvent, DataState> {
       print("U data blocu sam");
       final failureOrLogin = await dataUsecase.call(event.body);
       print("failure getting data $failureOrLogin");
-      failureOrLogin.fold((l) => emit(DataFailure(message: l.toString())), (r) {return emit(DataSuccess());});
+      failureOrLogin.fold((l) => emit(DataFailure(message: l.toString())), (r) {return emit(DataSuccess(r.simpleAppList));});
     });
   }
 }
