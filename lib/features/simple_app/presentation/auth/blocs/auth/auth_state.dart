@@ -26,6 +26,11 @@ class AuthFailure extends AuthState {
 }
 
 class AuthSuccess extends AuthState {
+  final String userToken;
+  final String localId;
+
+  const AuthSuccess({required this.userToken, required this.localId});
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [userToken, localId];
 }

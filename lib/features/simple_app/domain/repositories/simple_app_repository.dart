@@ -8,5 +8,5 @@ import '../usecases/get_data.dart';
 
 abstract class SimpleAppRepository{
   Future<Either<Failure, Login>> login(LoginParams loginParams);
-  Future<Either<Failure, SimpleApp>> data(DataParams dataParams);
+  Future<Either<Failure, SimpleAppList>> data(DataParams dataParams);
 }

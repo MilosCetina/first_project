@@ -1,4 +1,6 @@
-import 'package:first_project/features/simple_app/presentation/auth/blocs/auth_bloc.dart';
+import 'package:first_project/features/simple_app/domain/usecases/get_data.dart';
+import 'package:first_project/features/simple_app/presentation/auth/blocs/auth/auth_bloc.dart';
+import 'package:first_project/features/simple_app/presentation/auth/blocs/data/data_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'injection_container.dart' as di;
@@ -18,8 +20,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthBloc>(
-      create: (context) => AuthBloc(sl()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(
+            sl(),
+          ),
+        ),
+        BlocProvider<DataBloc>(
+          create: (context) => DataBloc(
+            sl(),
+          ),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -63,7 +76,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     print("tu sam111");
-    BlocProvider.of<AuthBloc>(context).add(LoginEvent(LoginParams(email: "marko@gmail.com", password: "marko123",)));
+    BlocProvider.of<AuthBloc>(context).add(LoginEvent(LoginParams(
+      email: "marko@gmail.com",
+      password: "marko123",
+    )));
+  }
+
+  void _nekaFuncija(String token) {
+    BlocProvider.of<DataBloc>(context).add(GetDataEvent(DataParams(
+      authToken: token,
+    )));
   }
 
   @override
@@ -73,33 +95,34 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthFailure) {
+              return Text("Ne uspesan login");
+            } else if (state is AuthSuccess) {
+              return Column(
+                children: [
+                  Text(state.localId),
+                  TextButton(
+                    onPressed: () => _nekaFuncija(state.userToken),
+                    child: Text("Get Data"),
+                  )
+                ],
+              );
+            }
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Please log in!',
+                ),
+                Text(
+                  '$_counter',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ],
+            );
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(

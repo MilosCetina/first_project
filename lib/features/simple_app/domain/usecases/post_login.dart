@@ -12,7 +12,6 @@ class PostLogin extends UseCase<Login, LoginParams> {
 
   @override
   Future<Either<Failure, Login>> call(LoginParams params) async {
-    print("in usecase");
     return await _repo.login(params);
   }
 }

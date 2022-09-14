@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import '../../../domain/entities/login.dart';
 
 class LoginResponse extends Equatable {
-  final String? id;
-  final String? token;
+  final String id;
+  final String token;
 
-  const LoginResponse({this.id, this.token});
+  const LoginResponse({required this.id, required this.token});
 
   LoginResponse.fromJson(dynamic json)
       : id = json['localId'],
@@ -20,7 +20,7 @@ class LoginResponse extends Equatable {
     return map;
   }
 
-  Login toEntity() => Login(token);
+  Login toEntity() => Login(token, id);
 
   @override
   List<Object?> get props => [

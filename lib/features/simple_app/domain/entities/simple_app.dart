@@ -1,5 +1,14 @@
 import 'package:equatable/equatable.dart';
 
+class SimpleAppList extends Equatable{
+  final List<SimpleApp>? simpleAppList;
+
+  const SimpleAppList(this.simpleAppList);
+
+  @override
+  List<Object?> get props => [simpleAppList];
+}
+
 class SimpleApp extends Equatable{
   String? title;
   List<PdfLinks>? pdfLinks;

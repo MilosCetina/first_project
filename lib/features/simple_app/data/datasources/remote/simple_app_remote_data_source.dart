@@ -12,7 +12,7 @@ abstract class SimpleAppRemoteDataSource{
   // Future<SimpleAppModel> getData();
   // Future<SimpleAppModel> getLink();
   Future<LoginResponse> login(LoginParams loginParams);
-  Future<SimpleAppModel> data(DataParams dataParams);
+  Future<SimpleAppListModel> data(DataParams dataParams);
 }
 
 class SimpleAppRemoteDataSourceImpl implements SimpleAppRemoteDataSource{
@@ -36,11 +36,6 @@ class SimpleAppRemoteDataSourceImpl implements SimpleAppRemoteDataSource{
       final url = Uri.parse("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAD3SARICdEM8UteFzAtjqS5AnfdtHXSeQ");
       final response = await client.post(url, body: loginParams.toJson());
 
-      print("dosao sam u datasource od data");
-
-      print(json.decode(response.body));
-
-
       if(response.statusCode == 200){
         final result = LoginResponse.fromJson(json.decode(response.body));
         return result;
@@ -53,13 +48,17 @@ class SimpleAppRemoteDataSourceImpl implements SimpleAppRemoteDataSource{
   }
 
   @override
-  Future<SimpleAppModel> data(DataParams dataParams) async {
+  Future<SimpleAppListModel> data(DataParams dataParams) async {
     try{
-      final url = Uri.parse("https://icb-first-project-default-rtdb.europe-west1.firebasedatabase.app");
+      final url = Uri.parse("https://icb-first-project-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=${dataParams.authToken}");
       final response = await client.get(url);
-      final result = SimpleAppModel.fromJson(response.body);
+
+      print("dosao sam u datasource od data");
+
+      print(response.body);
 
       if(response.statusCode == 200){
+        final result = SimpleAppListModel.fromJson(json.decode(response.body));
         return result;
       } else{
         throw ServerException("Server ne valja");

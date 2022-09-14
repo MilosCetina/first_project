@@ -19,9 +19,6 @@ class SimpleAppRepositoryImpl implements SimpleAppRepository{
     try{
       final response = await simpleAppRemoteDataSource.login(loginParams);
 
-      print("Dosao sam u repo od data");
-      print("Ovo je response od repo data $response");
-      
       return Right(response.toEntity());
     } on ServerException catch(e){
       return Left(ServerFailure(e.message));
@@ -29,9 +26,12 @@ class SimpleAppRepositoryImpl implements SimpleAppRepository{
   }
 
   @override
-  Future<Either<Failure, SimpleApp>> data(DataParams dataParams) async {
+  Future<Either<Failure, SimpleAppList>> data(DataParams dataParams) async {
     try{
       final response = await simpleAppRemoteDataSource.data(dataParams);
+
+      print("Dosao sam u repo od data");
+      print("Ovo je response od repo data $response");
 
       return Right(response);
     }on ServerException catch(e){

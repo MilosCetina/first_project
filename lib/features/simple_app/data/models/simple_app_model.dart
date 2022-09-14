@@ -1,9 +1,26 @@
 import 'package:first_project/features/simple_app/domain/entities/simple_app.dart';
 
-class SimpleAppModel extends SimpleApp{
+class SimpleAppListModel extends SimpleAppList {
+  const SimpleAppListModel(List<SimpleAppModel> super.simpleAppList);
+
+  factory SimpleAppListModel.fromJson(Map<String, dynamic> json) {
+    print(json);
+    List<SimpleAppModel> list = [];
+    // return SimpleAppListModel(json == null ? [] : json.map((key, value) => SimpleApp(value["title"], value["pdfLinks"])).entries);
+    json.forEach((key, value) {list.add(SimpleAppModel.fromJson(value));});
+    return SimpleAppListModel(list);
+  }
+}
+
+class SimpleAppModel extends SimpleApp {
   SimpleAppModel({super.title, super.pdfLinks, super.htmlTags});
 
-  SimpleAppModel.fromJson(dynamic json){
+  SimpleAppModel.fromJson(Map<String, dynamic> json) {
+    print("------------------------------");
+    json.forEach((key, value) {
+      print(key);
+      print(value);
+    });
     title = json['title'];
     if (json['pdfLinks'] != null) {
       pdfLinks = <PdfLinks>[];
@@ -18,15 +35,9 @@ class SimpleAppModel extends SimpleApp{
       });
     }
   }
-
-  //!!!!!!!!!!!!!!!!!!!!!!
-  // SimpleApp toEntity(){
-  //   return SimpleApp(htmlTags: , pdfLinks: , title: );
-  // }
-
 }
 
-class PdfLinksModel extends PdfLinks{
+class PdfLinksModel extends PdfLinks {
   PdfLinksModel({super.title, super.link});
 
   PdfLinksModel.fromJson(Map<String, dynamic> json) {
@@ -42,7 +53,7 @@ class PdfLinksModel extends PdfLinks{
   }
 }
 
-class HtmlTagsModel extends HtmlTags{
+class HtmlTagsModel extends HtmlTags {
   HtmlTagsModel({super.title, super.html});
 
   HtmlTagsModel.fromJson(Map<String, dynamic> json) {
