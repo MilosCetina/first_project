@@ -4,6 +4,7 @@ import 'package:first_project/features/simple_app/presentation/auth/blocs/data/d
 import 'package:first_project/features/simple_app/presentation/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'features/simple_app/presentation/pages/detail_page.dart';
 import 'injection_container.dart' as di;
 
 import 'features/simple_app/domain/usecases/post_login.dart';
@@ -14,6 +15,7 @@ void main() async {
   await di.init();
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -39,7 +41,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const MyHomePage(title: 'Flutter Demo Home Page',),
+        routes: {
+          MainPage.routeName: (ctx) => MainPage(),
+          DetailPage.routeName: (ctx) => DetailPage(),
+        },
       ),
     );
   }
@@ -58,7 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    print("tu sam111");
     BlocProvider.of<AuthBloc>(context).add(LoginEvent(LoginParams(
       email: "marko@gmail.com",
       password: "marko123",
@@ -79,51 +84,52 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-            children: [
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  if (state is AuthFailure) {
-                    return const Text("Ne uspesan login");
-                  } else if (state is AuthSuccess) {
-                    return Column(
-                      children: [
-                        Text("Pozdrav ${state.localId}"),
-                        TextButton(
-                          onPressed: () => _nekaFuncija(state.userToken),
-                          child: const Text("Get Data"),
-                        )
-                      ],
-                    );
-                  }
+          children: [
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthFailure) {
+                  return const Text("Ne uspesan login");
+                } else if (state is AuthSuccess) {
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Text(
-                        'Please log in!',
-                      ),
-                      Text(
-                        '$_counter',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
+                    children: [
+                      Text("Pozdrav ${state.localId}"),
+                      TextButton(
+                        onPressed: () => _nekaFuncija(state.userToken),
+                        child: const Text("Get Data"),
+                      )
                     ],
                   );
-                },
-              ),
-              BlocBuilder<DataBloc, DataState>(
-                builder: (context, state) {
-                  if (state is DataFailure) {
-                    return const Text("Ne uspesan get data");
-                  } else if (state is DataSuccess) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  MainPage(listOfItems: state.listOfItems,)));
-                  }
-                  return Text("");
-                },
-              ),
-            ],
-          ),
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text(
+                      'Please log in!',
+                    ),
+                    Text(
+                      '$_counter',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                  ],
+                );
+              },
+            ),
+            BlocListener<DataBloc, DataState>(
+              bloc: sl<DataBloc>(),
+              child: const Text("Neki child"),
+              listener: (context, state) {
+                if (state is DataFailure) {
+                   const Text("Ne uspesan get data");
+                } else if (state is DataSuccess) {
+                  Navigator.of(context).pushNamed(
+                    MainPage.routeName,
+                    arguments: state.listOfItems,
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,

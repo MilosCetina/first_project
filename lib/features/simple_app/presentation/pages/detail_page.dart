@@ -4,14 +4,19 @@ import 'package:flutter/material.dart';
 import '../../domain/entities/simple_app.dart';
 
 class DetailPage extends StatelessWidget {
-  final List<PdfLinks> pdfLinks;
-  final List<HtmlTags> htmlTags;
+  static const routeName = "/detail-page";
+  late List<PdfLinks> pdfLinks;
+  late List<HtmlTags> htmlTags;
 
-  const DetailPage({Key? key, required this.pdfLinks, required this.htmlTags})
+  DetailPage({Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final routeArgs =
+    ModalRoute.of(context)?.settings.arguments as Map<List<PdfLinks>, List<HtmlTags>>;
+    pdfLinks = routeArgs['pdf'] as List<PdfLinks>;
+    htmlTags = routeArgs['html'] as List<HtmlTags>;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Ovo je detail page"),
@@ -24,7 +29,7 @@ class DetailPage extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   leading: Text(pdfLinks[index].title),
-                  subtitle: const Text("Click here to see pdf and htmls"),
+                  //subtitle: const Text("Click here to see pdf and htmls"),
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -39,7 +44,7 @@ class DetailPage extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   leading: Text(htmlTags[index].title),
-                  subtitle: const Text("Click here to see pdf and htmls"),
+                  //subtitle: const Text("Click here to see pdf and htmls"),
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
