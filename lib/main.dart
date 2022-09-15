@@ -5,6 +5,7 @@ import 'package:first_project/features/simple_app/presentation/pages/main_page.d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/simple_app/presentation/pages/detail_page.dart';
+import 'features/simple_app/presentation/widgets/app_view.dart';
 import 'injection_container.dart' as di;
 
 import 'features/simple_app/domain/usecases/post_login.dart';
@@ -26,27 +27,13 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(
-            sl(),
-          ),
+          create: (context) => sl<AuthBloc>(),
         ),
         BlocProvider<DataBloc>(
-          create: (context) => DataBloc(
-            sl(),
-          ),
+          create: (context) => sl<DataBloc>(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page',),
-        routes: {
-          MainPage.routeName: (ctx) => MainPage(),
-          DetailPage.routeName: (ctx) => DetailPage(),
-        },
-      ),
+      child: const AppView(),
     );
   }
 }
