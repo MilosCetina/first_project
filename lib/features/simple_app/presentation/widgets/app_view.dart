@@ -13,7 +13,7 @@ class AppView extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: const Splash(),
       routes: {
         MainPage.routeName: (ctx) => MainPage(),
         DetailPage.routeName: (ctx) => DetailPage(),

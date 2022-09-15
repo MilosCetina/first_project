@@ -1,19 +1,50 @@
-import 'package:first_project/features/simple_app/presentation/auth/blocs/auth/auth_bloc.dart';
-import 'package:first_project/features/simple_app/presentation/pages/splash_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class Splash extends StatefulWidget {
+  const Splash({Key? key}) : super(key: key);
+
+  @override
+  State<Splash> createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
+
+  @override
+  void initState(){
+    super.initState();
+    initialization();
+  }
+
+  void initialization(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      if(state is AuthInitial){
-        return const SplashPage();
-      } else if(state is AuthFailure){
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Login"),
+      ),
+      body: const Center(
+        child: Text("Done"),
+      ),
+    );
+  }
+}
 
-      }
-    });
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Login"),
+      ),
+      body: const Center(
+        child: Text("Done"),
+      ),
+    );
   }
 }

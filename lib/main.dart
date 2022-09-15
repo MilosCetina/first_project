@@ -4,7 +4,7 @@ import 'package:first_project/features/simple_app/presentation/auth/blocs/data/d
 import 'package:first_project/features/simple_app/presentation/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'features/simple_app/presentation/pages/detail_page.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'features/simple_app/presentation/widgets/app_view.dart';
 import 'injection_container.dart' as di;
 
@@ -12,7 +12,8 @@ import 'features/simple_app/domain/usecases/post_login.dart';
 import 'injection_container.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await di.init();
   runApp(const MyApp());
 }
